@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Protocoles Cardio Tapis</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<style>
+/* Layout : colonne éditoriale unique, sections numérotées seulement là où il y a un ordre réel ; profils d'inclinaison dessinés comme l'écran d'un tapis */
+:root{
+  --bg:#0B0B0A;
+  --panel:#151513;
+  --line:#2A2925;
+  --fg:#F3F1E8;
+  --muted:#A3A08F;
+  --yellow:#F5C400;
+  --lime:#E9F755;
+  --on-yellow:#0B0B0A;
+  --display:"Bebas Neue",Impact,"Arial Narrow",Arial,sans-serif;
+  --body:"DM Sans",Arial,Helvetica,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:760px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:.02em;line-height:1;margin:0;text-wrap:balance}
+p{margin:0}
+a{color:var(--yellow)}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);font-weight:700}
+
+/* hero */
+.hero{padding-block:48px 32px;display:grid;gap:16px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(56px,13vw,112px);color:var(--fg)}
+.hero h1 span{color:var(--yellow)}
+.hero .lead{font-size:18px;color:var(--muted);max-width:56ch}
+.hero .lead strong{color:var(--fg)}
+.readout{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.readout div{border:1px solid var(--line);border-radius:4px;padding:10px 14px;min-width:0}
+.readout b{display:block;font-family:var(--display);font-size:30px;color:var(--yellow);font-weight:400;line-height:1;font-variant-numeric:tabular-nums}
+.readout small{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+
+section{padding-block:40px 8px;display:grid;gap:20px}
+section h2{font-size:clamp(36px,7vw,52px)}
+.intro{color:var(--muted);max-width:62ch}
+
+/* règles */
+.rules{list-style:none;margin:0;padding:0;display:grid;gap:12px;counter-reset:r}
+.rules li{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start;counter-increment:r}
+.rules li::before{content:counter(r);font-family:var(--display);font-size:34px;line-height:1;color:var(--on-yellow);background:var(--yellow);border-radius:4px;text-align:center;padding-top:6px;height:44px}
+.rules b{display:block;font-size:17px}
+.rules span{color:var(--muted)}
+
+/* niveau */
+.level{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.level p{color:var(--muted);font-size:14px;width:100%}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:4px;gap:4px;flex-wrap:wrap}
+.seg button{font:inherit;font-size:14px;font-weight:700;border:0;background:transparent;color:var(--muted);padding:8px 16px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--yellow);color:var(--on-yellow)}
+.seg button:focus-visible,.proto summary:focus-visible,.week input:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+
+/* protocoles */
+.protos{display:grid;gap:14px}
+.proto{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.proto summary{list-style:none;cursor:pointer;padding:18px 18px 14px;display:grid;gap:10px}
+.proto summary::-webkit-details-marker{display:none}
+.ph{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.ph h3{font-size:34px}
+.ph .dur{font-family:var(--display);font-size:24px;color:var(--yellow);font-variant-numeric:tabular-nums}
+.tag{font-size:13px;color:var(--muted)}
+.profile{display:flex;align-items:flex-end;gap:2px;height:72px;border-bottom:1px solid var(--line);padding-bottom:2px}
+.profile i{display:block;background:var(--yellow);border-radius:2px 2px 0 0;min-width:4px;opacity:.9}
+.profile i.low{background:var(--lime);opacity:.55}
+.more{font-size:13px;color:var(--yellow);font-weight:700}
+.proto[open] .more{display:none}
+.body{padding:0 18px 20px;display:grid;gap:14px}
+.steps{width:100%;border-collapse:collapse;font-size:15px;font-variant-numeric:tabular-nums}
+.steps th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:6px 8px 6px 0;border-bottom:1px solid var(--line)}
+.steps td{padding:9px 8px 9px 0;border-bottom:1px solid var(--line)}
+.steps td:not(:first-child),.steps th:not(:first-child){text-align:right}
+.tablewrap{overflow-x:auto}
+.why{color:var(--muted)}
+.why strong{color:var(--fg)}
+
+/* semaine */
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.day{border:1px solid var(--line);border-radius:6px;padding:10px 6px;display:grid;gap:6px;align-content:start;text-align:center;min-width:0}
+.day.on{border-color:var(--yellow)}
+.day b{font-family:var(--display);font-size:22px;font-weight:400;line-height:1}
+.day span{font-size:12px;color:var(--muted);line-height:1.3;overflow-wrap:anywhere}
+.day.on span{color:var(--fg)}
+@media (max-width:560px){.week{grid-template-columns:1fr}.day{grid-template-columns:48px 1fr;text-align:left;align-items:center}}
+
+/* progression */
+.prog{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.prog div{border-top:3px solid var(--yellow);padding-top:10px;display:grid;gap:4px}
+.prog b{font-family:var(--display);font-size:26px;font-weight:400}
+.prog span{color:var(--muted);font-size:14px}
+
+/* tracker */
+.track{display:grid;gap:8px}
+.trow{display:grid;grid-template-columns:90px repeat(4,1fr);gap:6px;align-items:center}
+.trow > span{font-size:13px;color:var(--muted)}
+.trow label{display:flex;justify-content:center;align-items:center;height:40px;border:1px solid var(--line);border-radius:6px;cursor:pointer}
+.trow input{appearance:none;width:20px;height:20px;border:2px solid var(--muted);border-radius:4px;margin:0;cursor:pointer;display:grid;place-items:center}
+.trow input:checked{background:var(--yellow);border-color:var(--yellow)}
+.trow input:checked::after{content:"";width:6px;height:11px;border:solid var(--on-yellow);border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.count{font-family:var(--display);font-size:28px;color:var(--yellow)}
+
+/* erreurs */
+.errs{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.err{border:1px solid var(--line);border-radius:8px;padding:14px;display:grid;gap:6px}
+.err b{font-size:16px}
+.err span{color:var(--muted);font-size:14px}
+
+/* cta */
+.cta{margin-top:40px;background:var(--yellow);color:var(--on-yellow);border-radius:10px;padding:28px 22px;display:grid;gap:10px}
+.cta h2{font-size:clamp(36px,8vw,56px);color:var(--on-yellow)}
+.cta p{font-size:16px;max-width:52ch}
+.cta .kw{font-family:var(--display);font-size:30px;background:var(--on-yellow);color:var(--yellow);padding:4px 14px;border-radius:4px;justify-self:start}
+footer{margin-top:24px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.note{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="hero">
+  <span class="eyebrow">Fonseca Online Coaching · Guide offert</span>
+  <h1>Marche <span>inclinée</span><br>5 protocoles tapis</h1>
+  <p class="lead">Le cardio qui fait fondre <strong>sans te mettre KO</strong>. Pas de faim de loup le soir, pas de "je l'ai bien mérité". Juste une méthode que tu peux tenir <strong>4 fois par semaine, toute l'année</strong> 🔥</p>
+  <div class="readout" aria-label="Les repères de base">
+    <div><b>15-20</b><small>minutes</small></div>
+    <div><b>6-10 %</b><small>inclinaison</small></div>
+    <div><b>4x</b><small>par semaine</small></div>
+    <div><b>0</b><small>main sur les barres</small></div>
+  </div>
+</header>
+
+<section>
+  <span class="eyebrow">Avant de monter sur le tapis</span>
+  <h2>Les 4 règles d'or</h2>
+  <ol class="rules">
+    <li><div><b>Mains libres 🙌</b><span>Si tu te tiens aux barres, tu enlèves une bonne partie du travail. Tu peux toucher pour l'équilibre, jamais t'appuyer.</span></div></li>
+    <li><div><b>Après le renfo, pas avant</b><span>Ta séance de renfo passe en premier, avec toute ton énergie. La marche vient ensuite, en fin de séance.</span></div></li>
+    <li><div><b>Le test de la parole 🗣️</b><span>Tu dois pouvoir parler par phrases courtes. Si tu chantes, monte. Si tu ne peux plus parler, baisse. Effort ressenti : 5 à 6 sur 10.</span></div></li>
+    <li><div><b>Inclinaison avant vitesse</b><span>Pour progresser, on ajoute d'abord des minutes, puis de l'inclinaison. La vitesse en dernier. On ne court jamais.</span></div></li>
+  </ol>
+</section>
+
+<section>
+  <span class="eyebrow">Les protocoles</span>
+  <h2>Choisis ton niveau</h2>
+  <div class="level">
+    <p>Les vitesses et inclinaisons s'adaptent automatiquement à ton niveau.</p>
+    <div class="seg" role="group" aria-label="Niveau">
+      <button type="button" id="lv-deb" data-lv="deb">Débutant(e)</button>
+      <button type="button" id="lv-int" data-lv="int" aria-pressed="true">Intermédiaire</button>
+      <button type="button" id="lv-av" data-lv="av">Avancé(e)</button>
+    </div>
+  </div>
+  <div class="protos" id="protos"></div>
+  <p class="note">Les vitesses sont des repères. Le test de la parole a toujours le dernier mot : si c'est trop dur, baisse d'abord la vitesse de 0,3 km/h.</p>
+</section>
+
+<section>
+  <span class="eyebrow">Exemple de semaine</span>
+  <h2>4 séances, zéro fatigue</h2>
+  <div class="week">
+    <div class="day on"><b>Lun</b><span>Renfo + Classique</span></div>
+    <div class="day"><b>Mar</b><span>Repos ou balade</span></div>
+    <div class="day on"><b>Mer</b><span>La Longue</span></div>
+    <div class="day on"><b>Jeu</b><span>Renfo + Escalier</span></div>
+    <div class="day"><b>Ven</b><span>Repos</span></div>
+    <div class="day on"><b>Sam</b><span>Renfo + Vagues</span></div>
+    <div class="day"><b>Dim</b><span>Balade dehors</span></div>
+  </div>
+  <p class="intro">Semaine chargée ? Remplace n'importe quelle séance par l'Express. Ce qui compte, c'est de ne pas sauter la semaine.</p>
+</section>
+
+<section>
+  <span class="eyebrow">Sur 4 semaines</span>
+  <h2>Comment progresser</h2>
+  <div class="prog">
+    <div><b>Semaine 1</b><span>Protocoles tels quels. Tu apprends à lâcher les barres.</span></div>
+    <div><b>Semaine 2</b><span>+2 à 3 minutes sur chaque séance.</span></div>
+    <div><b>Semaine 3</b><span>+1 % d'inclinaison sur tous les paliers.</span></div>
+    <div><b>Semaine 4</b><span>Si tout passe au test de la parole : +0,2 km/h.</span></div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Ton suivi</span>
+  <h2>Coche tes séances</h2>
+  <div class="track" id="track"></div>
+  <p class="intro"><span class="count" id="count">0/16</span> séances faites. Tes coches restent enregistrées sur ce téléphone.</p>
+</section>
+
+<section>
+  <span class="eyebrow">Ce qui sabote les résultats</span>
+  <h2>Les 4 erreurs classiques</h2>
+  <div class="errs">
+    <div class="err"><b>Mettre 15 % dès le premier jour</b><span>Mollets en feu, tibias douloureux, et tu arrêtes. On monte progressivement.</span></div>
+    <div class="err"><b>S'accrocher aux barres</b><span>Le tapis affiche des calories que ton corps ne dépense pas vraiment.</span></div>
+    <div class="err"><b>Se "récompenser" après</b><span>La marche ne t'épuise pas, donc pas de faim compensatoire. Ne la crée pas avec un en-cas "mérité".</span></div>
+    <div class="err"><b>Tout miser sur une séance</b><span>Une grosse séance par semaine fait moins que quatre petites. La régularité gagne toujours.</span></div>
+  </div>
+</section>
+
+<div class="cta">
+  <h2>Tu veux qu'on aille plus loin ?</h2>
+  <p>Ces protocoles, c'est la base. Dans le coaching, la team construit ton cardio, ton renfo et ton alimentation autour de ton quotidien. Écris-moi en DM sur Instagram :</p>
+  <span class="kw">TRANSFO</span>
+</div>
+
+<footer>
+  <span>Fonseca Online Coaching</span>
+  <span>@marc__fonseca</span>
+</footer>
+<p class="note" style="margin-top:12px">Douleur articulaire, essoufflement anormal ou problème de santé : demande l'avis de ton médecin avant de commencer.</p>
+
+</div>
+
+<script>
+const LV = {
+  deb:{v:4.5, inc:-2, label:"Débutant(e)"},
+  int:{v:5.2, inc:0,  label:"Intermédiaire"},
+  av: {v:5.8, inc:2,  label:"Avancé(e)"}
+};
+// segments : [minutes, inclinaison (niveau intermédiaire), écart de vitesse, nom]
+const P = [
+  {id:"classique", name:"Le Classique", when:"Après le renfo · le protocole de base", seg:[[2,4,-0.4,"Mise en route"],[16,8,0,"Plateau"],[2,3,-0.5,"Retour au calme"]],
+   why:"<strong>Le pilier.</strong> Un effort stable et confortable que tu peux enchaîner toute l'année. C'est celui de la vidéo : 15 à 20 minutes, inclinaison entre 6 et 10 %."},
+  {id:"escalier", name:"L'Escalier", when:"Après le renfo · pour casser la routine", seg:[[3,4,-0.3,"Palier 1"],[4,6,0,"Palier 2"],[4,8,0,"Palier 3"],[4,10,0,"Palier 4"],[3,12,-0.3,"Palier 5"],[2,4,-0.5,"Retour au calme"]],
+   why:"<strong>Tu montes une colline virtuelle.</strong> L'inclinaison augmente toutes les 3-4 minutes, la vitesse reste quasi stable. Le temps passe plus vite et l'effort reste maîtrisé."},
+  {id:"vagues", name:"Les Vagues", when:"Après le renfo · le plus dynamique", seg:[[2,5,-0.3,"Mise en route"],[2,6,0,"Vague basse"],[2,11,-0.2,"Vague haute"],[2,6,0,"Vague basse"],[2,11,-0.2,"Vague haute"],[2,6,0,"Vague basse"],[2,11,-0.2,"Vague haute"],[2,6,0,"Vague basse"],[2,11,-0.2,"Vague haute"],[2,3,-0.5,"Retour au calme"]],
+   why:"<strong>Des montées, jamais de course.</strong> Tu alternes 2 minutes faciles et 2 minutes plus pentues. Ça ressemble à du fractionné, sans la fatigue ni la faim du HIIT."},
+  {id:"longue", name:"La Longue", when:"Jour sans renfo · avec un podcast", seg:[[5,4,-0.3,"Mise en route"],[30,6,0.2,"Croisière"],[5,3,-0.5,"Retour au calme"]],
+   why:"<strong>Ta séance détente.</strong> Plus longue, plus douce. Idéale le jour off : elle ajoute de la dépense sans entamer ta récup pour la séance suivante."},
+  {id:"express", name:"L'Express", when:"Journée chargée · 12 minutes chrono", seg:[[2,6,-0.3,"Mise en route"],[10,12,-0.6,"Montée"]],
+   why:"<strong>Mieux que rien, et de loin.</strong> Pente forte, vitesse réduite. Court mais efficace, parfait quand tu n'as pas le temps. L'important : garder l'habitude."}
+];
+
+let level = "int";
+try{ level = localStorage.getItem("fc-level") || "int"; }catch(e){}
+if(!LV[level]) level="int";
+
+const fmt = n => n.toFixed(1).replace(".",",");
+const clampInc = i => Math.max(1, Math.min(15, i));
+
+function render(){
+  document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.lv===level ? "true":"false"));
+  const L = LV[level];
+  const open = new Set([...document.querySelectorAll(".proto[open]")].map(d=>d.id));
+  const html = P.map(p=>{
+    const total = p.seg.reduce((a,s)=>a+s[0],0);
+    const rows = p.seg.map(s=>{
+      const inc = clampInc(s[1] + (s[1] > 4 ? L.inc : 0));
+      return {min:s[0], inc, v: L.v + s[2], name:s[3]};
+    });
+    const maxInc = 15;
+    const bars = rows.map(r=>`<i class="${r.inc<=5?'low':''}" style="flex:${r.min};height:${Math.max(8,(r.inc/maxInc)*100)}%" title="${r.name} · ${r.inc} %"></i>`).join("");
+    const tr = rows.map(r=>`<tr><td>${r.name}</td><td>${r.min} min</td><td>${r.inc} %</td><td>${fmt(r.v)} km/h</td></tr>`).join("");
+    return `<details class="proto" id="p-${p.id}" ${open.has("p-"+p.id)?"open":""}>
+      <summary>
+        <div class="ph"><h3>${p.name}</h3><span class="dur">${total} min</span></div>
+        <span class="tag">${p.when}</span>
+        <div class="profile" aria-hidden="true">${bars}</div>
+        <span class="more">Voir le détail ↓</span>
+      </summary>
+      <div class="body">
+        <p class="why">${p.why}</p>
+        <div class="tablewrap"><table class="steps">
+          <thead><tr><th>Phase</th><th>Durée</th><th>Pente</th><th>Vitesse</th></tr></thead>
+          <tbody>${tr}</tbody>
+        </table></div>
+      </div>
+    </details>`;
+  }).join("");
+  document.getElementById("protos").innerHTML = html;
+}
+
+document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{
+  level=b.dataset.lv; try{localStorage.setItem("fc-level",level)}catch(e){} render();
+}));
+render();
+
+// tracker 4 semaines x 4 séances
+let done = {};
+try{ done = JSON.parse(localStorage.getItem("fc-track")||"{}") || {}; }catch(e){ done={}; }
+const track = document.getElementById("track");
+let t = "";
+for(let w=1; w<=4; w++){
+  t += `<div class="trow"><span>Semaine ${w}</span>`;
+  for(let s=1; s<=4; s++){
+    const id=`w${w}s${s}`;
+    t += `<label for="${id}" aria-label="Semaine ${w}, séance ${s}"><input type="checkbox" id="${id}" ${done[id]?"checked":""}></label>`;
+  }
+  t += `</div>`;
+}
+track.innerHTML = t;
+function count(){ document.getElementById("count").textContent = `${Object.values(done).filter(Boolean).length}/16`; }
+track.addEventListener("change",e=>{
+  if(e.target.type!=="checkbox") return;
+  done[e.target.id]=e.target.checked;
+  try{localStorage.setItem("fc-track",JSON.stringify(done))}catch(err){}
+  count();
+});
+count();
+</script>
+</body>
+</html>
